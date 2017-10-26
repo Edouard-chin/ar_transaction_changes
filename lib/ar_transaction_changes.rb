@@ -28,6 +28,10 @@ module ArTransactionChanges
   end
 
   def deprecated_transaction_changed_attributes
+    if ActiveRecord::VERSION::MAJOR >= 5 && ActiveRecord::VERSION::MINOR >= 1
+      changed_attributes = saved_changes.transform_values(&:first)
+    end
+
     changed_attributes.merge(@deprecated_transaction_changed_attributes ||= {})
   end
 
